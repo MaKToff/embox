@@ -9,6 +9,8 @@
 #include <assert.h>
 #include <stddef.h>
 
+#include <util/binalign.h>
+
 #include <kernel/task.h>
 #include <kernel/task/resource.h>
 
@@ -98,11 +100,16 @@ static int task_resource_module_init(void) {
 		assert(res->resource_offset);
 		*res->resource_offset = offset;
 
-		assert((offset + res->resource_size) <= TASK_RESOURCE_SIZE);
+		//assert((offset + res->resource_size) <= TASK_RESOURCE_SIZE);
+
 		offset += binalign_bound(res->resource_size, sizeof(void *));
+		/* if we have aligned resource we have to reserve space for alignment*/
+		if(res->resource_align) {
+			offset += binalign_bound(res->resource_align, sizeof(void *));
+		}
 	}
 
-	assert(offset == binalign_bound(TASK_RESOURCE_SIZE, sizeof(void *)));
+	//assert(offset == binalign_bound(TASK_RESOURCE_SIZE, sizeof(void *)));
 
 	return 0;
 }

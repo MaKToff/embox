@@ -21,6 +21,7 @@ struct task_resource_desc {
 	void (*deinit)(const struct task *task);
 	size_t resource_size; /* to be used in on-stack allocation */
 	size_t *resource_offset;
+	int resource_align;
 	int (*exec)(const struct task *task, const char *path, char *const argv[]);
 };
 
