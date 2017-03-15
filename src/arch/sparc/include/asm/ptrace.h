@@ -29,8 +29,10 @@ struct pt_regs {
 	uint32_t ins[8];     /**< Input registers. */
 }__attribute__ ((aligned (8)));
 
+#define PT_REGS_ALIGN    8
+
 static inline void ptregs_retcode(struct pt_regs *ptregs, int retcode) {
-	ptregs->ins[0] = retcode;
+	ptregs->ins[7] = retcode;
 }
 
 #else /* __ASSEMBLER__ */
